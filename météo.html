@@ -1,0 +1,90 @@
+ <!DOCTYPE html>
+
+<html><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Météo Live</title>
+  <style>
+  body{
+    background: #ccc;
+  }
+  .box{
+    background:rgba(255,255,255,0.8);
+    box-shadow:5px 5px 5px rgba(0,0,0,0.5);
+    padding:20px;
+    
+    border-radius:6px;
+    
+  }
+    p{
+      color:green;
+    }
+   
+    .variables{
+      color:blue;
+    }
+    h3{
+      color:green;
+      text-align: center;
+    }
+        .value{
+          color:green;
+        }   
+        h2{
+          color:blue ;
+        }
+        b{
+          color:red;
+        }
+  </style>
+</head>
+<body>
+  <h2>Météo</h2>
+ <div class="box">
+   <b>Prévisions Météorologique</b>
+  <p id="info"></p>
+  </div>
+  <script>
+  setInterval(()=>{
+  fetch('https://api.open-meteo.com/v1/forecast?latitude=9.08&longitude=8.68&current_weather=true')
+.then(res => res.json())
+.then(data => {
+  const news=document.getElementById('info').innerHTML=`<span class="variables">Longitude :</span><span class="value">${data.longitude}<br>
+  <span class="variables">Latitude:</span> 
+  <span class="value">${data.latitude} </span><br>
+  
+  <span class="variables">Timezone</span>
+  <span class="value">${data.timezone}
+  </span>
+  <br>
+  <span class="variables">Elevation:</span><span class="value">${data.elevation}</span>
+  <br>
+  <span class="variables">Température :</span>
+  <span class="value">${data.current_weather.temperature}
+  </span>
+  <br>
+  
+  <span class="variables">Weathercode:</span> ${data.current_weather.weathercode}
+  
+  <br>
+  
+  
+  <span class="variables">Interval: </span>${data.current_weather.interval}
+  <br>
+  <span class="variables">Windspeed</span> ${data.current_weather.windspeed}
+  <br>
+  <span class="variables">Time:</span>${data.current_weather.time}
+  `;
+  
+})
+
+.catch(error=>{
+  console.error("erreurs de",error
+  )
+  document.getElementById('info').innerHTML="impossible de récupérer les données veuillez vérifier votre connexion internet  et réessayer !";
+})
+
+},1000);
+
+  </script>
+</body></html>
