@@ -1,90 +1,139 @@
- <!DOCTYPE html>
-
-<html><head>
+<!DOCTYPE html>
+<html>
+<head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Météo Live</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lecteur audio</title>
   <style>
-  body{
-    background: #ccc;
-  }
-  .box{
-    background:rgba(255,255,255,0.8);
-    box-shadow:5px 5px 5px rgba(0,0,0,0.5);
-    padding:20px;
-    
-    border-radius:6px;
-    
-  }
-    p{
-      color:green;
+    body {
+      background: rgba(0, 0, 255, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
     }
-   
-    .variables{
-      color:blue;
+
+    .audio-div {
+      background: #111;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: auto;
+      border-radius: 3rem;
+      padding: 30px;
+      min-width: 100%;
     }
-    h3{
-      color:green;
-      text-align: center;
+
+    .btn-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 50px;
+      width: 100%;
+      background: rgba(0,0,255,0.5);
+      padding: 20px;
+      border-radius: 3em;
     }
-        .value{
-          color:green;
-        }   
-        h2{
-          color:blue ;
-        }
-        b{
-          color:red;
-        }
+
+    button {
+      min-width: 200px;
+      height: 70px;
+      border-radius: 2rem;
+      cursor: pointer;
+      border: none;
+      background: rgba(0, 255, 0, 0.8);
+      color: #fff;
+      font-weight: bold;
+      letter-spacing: 7px;
+      text-transform: uppercase;
+    }
+
+    button:hover {
+      transition: all 0.3s ease;
+      background: moccasin;
+    }
+
+    .color {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 200px;
+      width: 200px;
+      border-radius: 50%;
+      animation-name: audio;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      margin-top: 50px;
+      filter: drop-shadow(3px 4px 4px #fff);
+      animation-play-state: paused;
+      color:gold;
+      font-weight: bold;
+      border:2px solid;
+    }
+
+    @keyframes audio {
+      0% { transform: scale(1); background: red; }
+      50% { transform: scale(1.4); background: violet; }
+      75% { transform: scale(1); background: blue; }
+      100% { transform: scale(1.4); background: lawngreen; }
+    }
+
+    #musique {
+      background: rgba(255,0,0,0.5);
+      padding: 10px;
+      width: 100%;
+      height: 70px;
+      border-radius: 3rem;
+    }
   </style>
 </head>
 <body>
-  <h2>Météo</h2>
- <div class="box">
-   <b>Prévisions Météorologique</b>
-  <p id="info"></p>
+  <div class="audio-div">
+    <audio src="https://files.catbox.moe/2vgkwr.mp3" id="musique" loop controls></audio>
+    <div class="color">
+    <h1>ASTA PHONK</h1>
+    </div>
+    <div class="btn-container">
+      <button onclick="play()">Play</button>
+      <button onclick="pause()">Pause</button>
+      <button onclick="changeTrack()">Changer</button>
+    </div>
   </div>
+
   <script>
-  setInterval(()=>{
-  fetch('https://api.open-meteo.com/v1/forecast?latitude=9.08&longitude=8.68&current_weather=true')
-.then(res => res.json())
-.then(data => {
-  const news=document.getElementById('info').innerHTML=`<span class="variables">Longitude :</span><span class="value">${data.longitude}<br>
-  <span class="variables">Latitude:</span> 
-  <span class="value">${data.latitude} </span><br>
-  
-  <span class="variables">Timezone</span>
-  <span class="value">${data.timezone}
-  </span>
-  <br>
-  <span class="variables">Elevation:</span><span class="value">${data.elevation}</span>
-  <br>
-  <span class="variables">Température :</span>
-  <span class="value">${data.current_weather.temperature}
-  </span>
-  <br>
-  
-  <span class="variables">Weathercode:</span> ${data.current_weather.weathercode}
-  
-  <br>
-  
-  
-  <span class="variables">Interval: </span>${data.current_weather.interval}
-  <br>
-  <span class="variables">Windspeed</span> ${data.current_weather.windspeed}
-  <br>
-  <span class="variables">Time:</span>${data.current_weather.time}
-  `;
-  
-})
+    const audio = document.getElementById('musique');
+    const colorBox = document.querySelector('.color');
+    const tracks = [
+      "https://files.catbox.moe/qesada.mp3",
+      "https://files.catbox.moe/2vgkwr.mp3",
+      "https://files.catbox.moe/7v0nxd.mp3",
+      "https://files.catbox.moe/w3psk5.mp3",
+      "https://files.catbox.moe/l7xst5.m4a",
+      "https://files.catbox.moe/9fnijf.mp3",
+      "https://files.catbox.moe/3iidzp.mp3",
+      "https://files.catbox.moe/80qnuh.mp3"
+    ];
 
-.catch(error=>{
-  console.error("erreurs de",error
-  )
-  document.getElementById('info').innerHTML="impossible de récupérer les données veuillez vérifier votre connexion internet  et réessayer !";
-})
+    function play() {
+      audio.play();
+      colorBox.style.animationPlayState = "running";
+    }
 
-},1000);
+    function pause() {
+      audio.pause();
+      colorBox.style.animationPlayState = "paused";
+    }
 
+    function changeTrack() {
+      const aleatoire = tracks[Math.floor(Math.random() * tracks.length)];
+      audio.src = aleatoire;
+      audio.play();
+      colorBox.style.animationPlayState = "running";
+    }
+
+    confirm("Écouter de la musique Phonk, pour, ce distraire ☘️🎉💯");
   </script>
-</body></html>
+</body>
+</html>
